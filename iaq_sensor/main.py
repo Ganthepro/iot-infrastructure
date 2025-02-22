@@ -5,6 +5,7 @@ import csv
 import json
 from dotenv import load_dotenv
 import os
+from multiprocessing import Process
 
 load_dotenv(override=True)
 
@@ -45,18 +46,24 @@ class IqaSensor:
     def close_connection(self):
         self.__connection.close()
 
+def run_iqa_sensor(csv_file):
+    sensor = IqaSensor()
+    sensor.read_csv(csv_file)
+    sensor.create_connection(RABBITMQ_HOST)
+    sensor.boardcast()
+
 if __name__ == '__main__':
-    iqa_sensor_1 = IqaSensor()
-    iqa_sensor_1.read_csv('data/sample_iaq_data_Room101.csv')
-    iqa_sensor_1.create_connection(RABBITMQ_HOST)
-    iqa_sensor_1.boardcast()
-    
-    iqa_sensor_2 = IqaSensor()
-    iqa_sensor_2.read_csv('data/sample_iaq_data_Room102.csv')
-    iqa_sensor_2.create_connection(RABBITMQ_HOST)
-    iqa_sensor_2.boardcast()
-    
-    iqa_sensor_3 = IqaSensor()
-    iqa_sensor_3.read_csv('data/sample_iaq_data_Room103.csv')
-    iqa_sensor_3.create_connection(RABBITMQ_HOST)
-    iqa_sensor_3.boardcast()
+    thread_1 = Process(target=run_iqa_sensor, args=('data/sample_iaq_data_Room101.csv',))
+    thread_2 = Process(target=run_iqa_sensor, args=('data/sample_iaq_data_Room102.csv',))
+    thread_3 = Process(target=run_iqa_sensor, args=('data/sample_iaq_data_Room103.csv',))
+
+    thread_1.start()
+    thread_2.start()
+    thread_3.start()\
+
+    # Wait for all processes to finish
+    thread_1.join()
+    thread_2.join()
+    thread_3.join()
+
+    print("All sensors finished broadcasting")
