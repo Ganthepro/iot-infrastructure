@@ -1,0 +1,80 @@
+name: "iot-infrastucture"
+
+services:
+  api:
+    build: 
+      dockerfile: ./api/Dockerfile
+    container_name: api
+    command: ["fastapi", "run"]
+    working_dir: /app
+    restart: always
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    env_file:
+      - .env
+
+  data_logger:
+    build: 
+      dockerfile: ./data_logger/Dockerfile
+    container_name: data_logger
+    command: ["python", "main.py"]
+    working_dir: /app
+    restart: always
+    depends_on:
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    env_file:
+      - .env
+
+  iaq_sensor:
+    build: 
+      dockerfile: ./iaq_sensor/Dockerfile
+    container_name: iaq_sensor
+    restart: always
+    command: ["python", "main.py"]
+    working_dir: /app
+    depends_on:
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    env_file:
+      - .env
+
+  rabbitmq:
+    image: rabbitmq:4.0-management
+    container_name: rabbitmq
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 30s
+      timeout: 30s
+      retries: 3
+
+  postgres:
+    image: postgres:alpine3.20
+    container_name: postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${DB_USERNAME}']
+      interval: 10s
+      timeout: 5s
+      retries: 5
