@@ -19,8 +19,8 @@ pipeline {
                 script {
                     // sh 'docker build --no-cache -t $DOCKER_CREDENTIALS_USR/data-logger:$BUILD_NUMBER ./data_logger'
                     // sh 'docker build --no-cache -t $DOCKER_CREDENTIALS_USR/iaq-sensor:$BUILD_NUMBER ./iaq_sensor'
-                    sh 'docker build --no-cache -t $DOCKER_CREDENTIALS_USR/data-logger:$BUILD_NUMBER -f data_logger/Dockerfile'
-                    sh 'docker build --no-cache -t $DOCKER_CREDENTIALS_USR/iaq-sensor:$BUILD_NUMBER -f iaq_sensor/Dockerfile'
+                    sh 'docker build --no-cache -t $DOCKER_CREDENTIALS_USR/data-logger:$BUILD_NUMBER -f data_logger/Dockerfile .'
+                    sh 'docker build --no-cache -t $DOCKER_CREDENTIALS_USR/iaq-sensor:$BUILD_NUMBER -f iaq_sensor/Dockerfile .'
                 }
             }
         }
