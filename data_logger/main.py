@@ -51,7 +51,6 @@ class DataLogger:
         self.insert(body)
 
     def insert(self, body):
-        print("received data :", body)
         datetime_str = body['datetime']
         date_time = dt.strptime(datetime_str, "%Y-%m-%d %H:%M:%S.%f")
         timestamp = int(date_time.replace(tzinfo=pytz.UTC).timestamp())

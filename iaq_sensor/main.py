@@ -31,7 +31,6 @@ class IqaSensor:
     
     def boardcast(self):
         for data in self.__data:
-            print(data)
             payload = {
                 "datetime": data[0],
                 "temperature": data[1],
@@ -40,7 +39,6 @@ class IqaSensor:
                 "id": self.__id
             }
             self.__channel.basic_publish(exchange='pubsub', routing_key='', body=json.dumps(payload))
-            print(f"sent data: {data}")
             time.sleep(self.__time)
         self.close_connection()
 
@@ -48,8 +46,17 @@ class IqaSensor:
         self.__connection.close()
 
 if __name__ == '__main__':
-    print("hello world")
-    iqa_sensor = IqaSensor()
-    iqa_sensor.read_csv('data/sample_iaq_data_Room101.csv')
-    iqa_sensor.create_connection(RABBITMQ_HOST)
-    iqa_sensor.boardcast()
+    iqa_sensor_1 = IqaSensor()
+    iqa_sensor_1.read_csv('data/sample_iaq_data_Room101.csv')
+    iqa_sensor_1.create_connection(RABBITMQ_HOST)
+    iqa_sensor_1.boardcast()
+    
+    iqa_sensor_2 = IqaSensor()
+    iqa_sensor_2.read_csv('data/sample_iaq_data_Room102.csv')
+    iqa_sensor_2.create_connection(RABBITMQ_HOST)
+    iqa_sensor_2.boardcast()
+    
+    iqa_sensor_3 = IqaSensor()
+    iqa_sensor_3.read_csv('data/sample_iaq_data_Room103.csv')
+    iqa_sensor_3.create_connection(RABBITMQ_HOST)
+    iqa_sensor_3.boardcast()

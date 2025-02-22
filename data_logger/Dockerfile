@@ -6,10 +6,10 @@ RUN apt update && apt install -y \
 
 WORKDIR /app
 
-COPY requirements.txt .
+COPY ./requirements.txt .
 
 RUN pip install -r requirements.txt
 
-COPY . .
+COPY ./data_logger .
 
-CMD ["python", "main.py"]
+CMD ["python", "./main.py"]
