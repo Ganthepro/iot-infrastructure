@@ -28,7 +28,7 @@ pipeline {
         stage('Push') {
             steps {
                 script {
-                    docker.withRegistry('tamtikorn.azurecr.io', 'azure-registry') {
+                    docker.withRegistry('https://tamtikorn.azurecr.io', 'azure-registry') {
                         docker.image("$DOCKER_CREDENTIALS_USR/data-logger:$BUILD_NUMBER").push()
                         docker.image("$DOCKER_CREDENTIALS_USR/iaq-sensor:$BUILD_NUMBER").push()
                     }
