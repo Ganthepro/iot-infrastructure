@@ -17,8 +17,8 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    sh 'docker build --no-cache -t $DOCKER_CREDENTIALS_USR/$data-logger:$BUILD_NUMBER ./data_logger'
-                    sh 'docker build --no-cache -t $DOCKER_CREDENTIALS_USR/$iaq-sensor:$BUILD_NUMBER ./iaq_sensor'
+                    sh 'docker build --no-cache -t $DOCKER_CREDENTIALS_USR/data-logger:$BUILD_NUMBER ./data_logger'
+                    sh 'docker build --no-cache -t $DOCKER_CREDENTIALS_USR/iaq-sensor:$BUILD_NUMBER ./iaq_sensor'
                 }
             }
         }
@@ -27,8 +27,8 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('https://registry.hub.docker.com', 'azure-registry') {
-                        docker.image("$DOCKER_CREDENTIALS_USR/$data-logger:$BUILD_NUMBER").push()
-                        docker.image("$DOCKER_CREDENTIALS_USR/$iaq-sensor:$BUILD_NUMBER").push()
+                        docker.image("$DOCKER_CREDENTIALS_USR/data-logger:$BUILD_NUMBER").push()
+                        docker.image("$DOCKER_CREDENTIALS_USR/iaq-sensor:$BUILD_NUMBER").push()
                     }
                 }
             }
