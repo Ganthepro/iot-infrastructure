@@ -38,6 +38,8 @@ postgres-data/
 pip-log.txt
 pip-delete-this-directory.txt
 
+tempCodeRunnerFile.py
+
 # Unit test / coverage reports
 htmlcov/
 .tox/
