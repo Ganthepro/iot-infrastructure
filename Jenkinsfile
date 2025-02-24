@@ -17,11 +17,11 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    sh 'docker build --no-cache -t $DOCKER_CREDENTIALS_USR/data-logger:$JOB_NAME -f data_logger/Dockerfile .'
+                    sh 'docker build --no-cache -t $DOCKER_CREDENTIALS_USR/data-logger:$GIT_TAG_NAME -f data_logger/Dockerfile .'
                     sh 'docker build --no-cache -t $DOCKER_CREDENTIALS_USR/data-logger:latest -f data_logger/Dockerfile .'
-                    sh 'docker build --no-cache -t $DOCKER_CREDENTIALS_USR/iaq-sensor:$JOB_NAME -f iaq_sensor/Dockerfile .'
+                    sh 'docker build --no-cache -t $DOCKER_CREDENTIALS_USR/iaq-sensor:$GIT_TAG_NAME -f iaq_sensor/Dockerfile .'
                     sh 'docker build --no-cache -t $DOCKER_CREDENTIALS_USR/iaq-sensor:latest -f iaq_sensor/Dockerfile .'
-                    sh 'docker build --no-cache -t $DOCKER_CREDENTIALS_USR/api:$JOB_NAME -f api/Dockerfile .'
+                    sh 'docker build --no-cache -t $DOCKER_CREDENTIALS_USR/api:$GIT_TAG_NAME -f api/Dockerfile .'
                     sh 'docker build --no-cache -t $DOCKER_CREDENTIALS_USR/api:latest -f api/Dockerfile .'
                 }
             }
@@ -31,11 +31,11 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('https://tamtikorn.azurecr.io', 'azure-registry') {
-                        docker.image("$DOCKER_CREDENTIALS_USR/data-logger:$JOB_NAME").push()
+                        docker.image("$DOCKER_CREDENTIALS_USR/data-logger:$GIT_TAG_NAME").push()
                         docker.image("$DOCKER_CREDENTIALS_USR/data-logger:latest").push()
-                        docker.image("$DOCKER_CREDENTIALS_USR/iaq-sensor:$JOB_NAME").push()
+                        docker.image("$DOCKER_CREDENTIALS_USR/iaq-sensor:$GIT_TAG_NAME").push()
                         docker.image("$DOCKER_CREDENTIALS_USR/iaq-sensor:latest").push()
-                        docker.image("$DOCKER_CREDENTIALS_USR/api:$JOB_NAME").push()
+                        docker.image("$DOCKER_CREDENTIALS_USR/api:$GIT_TAG_NAME").push()
                         docker.image("$DOCKER_CREDENTIALS_USR/api:latest").push()
                     }
                 }
