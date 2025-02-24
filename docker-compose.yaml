@@ -5,16 +5,16 @@ services:
     build: 
       dockerfile: ./api/Dockerfile
     container_name: api
-    command: ["fastapi", "run"]
+    # command: ["fastapi", "run"]
     working_dir: /app
     restart: always
     ports:
       - "8000:8000"
-    depends_on:
-      postgres:
-        condition: service_healthy
-      rabbitmq:
-        condition: service_healthy
+    # depends_on:
+    #   postgres:
+    #     condition: service_healthy
+    #   rabbitmq:
+    #     condition: service_healthy
     env_file:
       - .env
 
@@ -22,14 +22,14 @@ services:
     build: 
       dockerfile: ./data_logger/Dockerfile
     container_name: data_logger
-    command: ["python", "main.py"]
+    # command: ["python", "main.py"]
     working_dir: /app
     restart: always
-    depends_on:
-      postgres:
-        condition: service_healthy
-      rabbitmq:
-        condition: service_healthy
+    # depends_on:
+    #   postgres:
+    #     condition: service_healthy
+    #   rabbitmq:
+    #     condition: service_healthy
     env_file:
       - .env
 
@@ -38,13 +38,13 @@ services:
       dockerfile: ./iaq_sensor/Dockerfile
     container_name: iaq_sensor
     restart: always
-    command: ["python", "main.py"]
+    # command: ["python", "main.py"]
     working_dir: /app
-    depends_on:
-      postgres:
-        condition: service_healthy
-      rabbitmq:
-        condition: service_healthy
+    # depends_on:
+    #   postgres:
+    #     condition: service_healthy
+    #   rabbitmq:
+    #     condition: service_healthy
     env_file:
       - .env
 

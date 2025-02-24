@@ -53,13 +53,14 @@ def run_iqa_sensor(csv_file):
     sensor.boardcast()
 
 if __name__ == '__main__':
+    print("hello world")
     thread_1 = Process(target=run_iqa_sensor, args=('data/sample_iaq_data_Room101.csv',))
     thread_2 = Process(target=run_iqa_sensor, args=('data/sample_iaq_data_Room102.csv',))
     thread_3 = Process(target=run_iqa_sensor, args=('data/sample_iaq_data_Room103.csv',))
 
     thread_1.start()
     thread_2.start()
-    thread_3.start()\
+    thread_3.start()
 
     # Wait for all processes to finish
     thread_1.join()
