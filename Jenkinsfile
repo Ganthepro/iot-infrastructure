@@ -27,11 +27,8 @@ pipeline {
             steps {
                 script {
                     sh 'docker build --no-cache -t $DOCKER_CREDENTIALS_USR/data-logger:$TAG_NAME -f data_logger/Dockerfile .'
-                    sh 'docker build --no-cache -t $DOCKER_CREDENTIALS_USR/data-logger:latest -f data_logger/Dockerfile .'
                     sh 'docker build --no-cache -t $DOCKER_CREDENTIALS_USR/iaq-sensor:$TAG_NAME -f iaq_sensor/Dockerfile .'
-                    sh 'docker build --no-cache -t $DOCKER_CREDENTIALS_USR/iaq-sensor:latest -f iaq_sensor/Dockerfile .'
                     sh 'docker build --no-cache -t $DOCKER_CREDENTIALS_USR/api:$TAG_NAME -f api/Dockerfile .'
-                    sh 'docker build --no-cache -t $DOCKER_CREDENTIALS_USR/api:latest -f api/Dockerfile .'
                 }
             }
         }
@@ -41,11 +38,8 @@ pipeline {
                 script {
                     docker.withRegistry('https://tamtikorn.azurecr.io', 'azure-registry') {
                         docker.image("$DOCKER_CREDENTIALS_USR/data-logger:$TAG_NAME").push()
-                        docker.image("$DOCKER_CREDENTIALS_USR/data-logger:latest").push()
                         docker.image("$DOCKER_CREDENTIALS_USR/iaq-sensor:$TAG_NAME").push()
-                        docker.image("$DOCKER_CREDENTIALS_USR/iaq-sensor:latest").push()
                         docker.image("$DOCKER_CREDENTIALS_USR/api:$TAG_NAME").push()
-                        docker.image("$DOCKER_CREDENTIALS_USR/api:latest").push()
                     }
                 }
             }
