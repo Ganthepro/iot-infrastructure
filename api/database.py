@@ -9,12 +9,12 @@ load_dotenv(override=True)
 
 DATABASE = os.getenv("DB_DATABASE")
 PASSWORD = os.getenv("DB_PASSWORD")
-RABBITMQ_HOST = os.getenv("RABBITMQ_HOST")
 DB_HOST = os.getenv("DB_HOST")
+USERNAME = os.getenv("DB_USERNAME")
 
 url = URL.create(
     drivername="postgresql",
-    username="postgres",
+    username=USERNAME,
     host=DB_HOST,
     database=DATABASE,
     password=PASSWORD
