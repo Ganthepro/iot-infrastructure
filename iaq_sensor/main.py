@@ -24,6 +24,7 @@ class IqaSensor:
         self.__connection = pika.BlockingConnection(connection_parameters)
         self.__channel = self.__connection.channel()  
         self.__channel.exchange_declare(exchange='pubsub', exchange_type=ExchangeType.fanout)
+        print("Connected to RabbitMQ")
 
     def read_csv(self, file_path: str):
         self.__id = file_path.split("/")[1].split(".")[0]

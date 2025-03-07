@@ -41,6 +41,7 @@ class DataLogger:
         self.__channel.exchange_declare(exchange='pubsub', exchange_type=ExchangeType.fanout)
         self.__queue = self.__channel.queue_declare(queue='', exclusive=True)
         self.__channel.queue_bind(exchange='pubsub', queue=self.__queue.method.queue)
+        print("Connected to RabbitMQ")
 
     def receive(self):
         self.__channel.basic_consume(queue=self.__queue.method.queue, auto_ack=True,
